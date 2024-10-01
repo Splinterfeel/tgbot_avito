@@ -1,0 +1,6 @@
+aiohttp
+python-telegram-bot
+aioresponses
+pandas
+xlsxwriter
+packaging

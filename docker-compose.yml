@@ -1,0 +1,8 @@
+version: '3.7'
+
+services:
+  tgbot:
+    build: .
+    command: python3 tgbot.py
+    environment:
+      - TGBOT_TOKEN=<API_KEY>
