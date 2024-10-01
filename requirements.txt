@@ -4,3 +4,4 @@ aioresponses
 pandas
 xlsxwriter
 packaging
+asyncpg
