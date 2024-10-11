@@ -1,3 +1,4 @@
+import asyncio
 import os
 from telegram import ReplyKeyboardRemove, Update, ReplyKeyboardMarkup
 from telegram.ext import ApplicationBuilder, MessageHandler, ContextTypes, CommandHandler, ConversationHandler, filters
@@ -27,7 +28,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
 
 async def start_parsing(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    user_data = db.get_client_info(update.message.chat.username)
+    user_data = await db.get_client_info(update.message.chat.username)
     if not user_data:
         await update.message.reply_text('Укажите client_id и client_secret через пробел')
         return ENTERING_KEY
@@ -52,7 +53,7 @@ async def entered_keys(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
         return ENTERING_KEY
     client_id = msg_splitted[0]
     client_secret = msg_splitted[1]
-    db.add_client_info(update.message.chat.username, client_id, client_secret)
+    await db.add_client_info(update.message.chat.username, client_id, client_secret)
     await update.message.reply_text("Ключ принят")
     return ConversationHandler.END
 
@@ -65,7 +66,7 @@ async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 
 
 if __name__ == '__main__':
-    db.init()
+    asyncio.new_event_loop().run_until_complete(db.init())
     app = ApplicationBuilder().token(api_token).build()
     conv_handler = ConversationHandler(
         entry_points=[
